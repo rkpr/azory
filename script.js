@@ -48,7 +48,7 @@
         text: "Na zajęciach zawodowych na pewno nie jest nudno. Jest dużo praktyki, robimy różne projekty i korzystamy z pracowni oraz sprzętu, który naprawdę robi robotę. Uczysz się rzeczy przydatnych później w pracy."
       },
       {
-        label: "Praktyki",
+        label: "Praktyki zawodowe",
         title: "Czy są praktyki lub staże?",
         video: "videos/praktyki_720p.mp4",
         text: "Tak — w technikum praktyki odbywają się w 3 i 4 klasie i trwają miesiąc. W szkole branżowej masz zajęcia ogólne w szkole, a zawodu uczysz się u pracodawcy — i dostajesz za to wynagrodzenie."
