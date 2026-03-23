@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Asystent rekrutacji - Azory</title>
+
+    <style>
+        :root {
+            --bg: #ececec;
+            --panel: #ffffff;
+            --panel-soft: #f7f7f7;
+            --text: #183b6b;
+            --text-dark: #23436f;
+            --muted: #6d7c8f;
+            --line: #e3e7ec;
+
+            --navy: #0d4a84;
+            --navy-dark: #083b6d;
+            --blue: #7fb3d1;
+            --blue-soft: #d9e9f3;
+            --yellow: #f0cf3a;
+            --yellow-dark: #ddb91e;
+            --pink: #d65a9f;
+
+            --shadow: 0 10px 24px rgba(29, 54, 84, 0.08);
+            --radius: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: var(--text-dark);
+            background:
+                radial-gradient(circle at 6% 86%, rgba(127, 179, 209, 0.35) 0 52px, transparent 53px),
+                radial-gradient(circle at 10% 78%, rgba(214, 90, 159, 0.28) 0 28px, transparent 29px),
+                radial-gradient(circle at 94% 14%, rgba(127, 179, 209, 0.35) 0 52px, transparent 53px),
+                radial-gradient(circle at 89% 24%, rgba(214, 90, 159, 0.25) 0 28px, transparent 29px),
+                linear-gradient(180deg, #f2f2f2 0%, #ebebeb 100%);
+            min-height: 100vh;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 14px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .player-card {
+            padding: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(8px);
+        }
+
+        .video-wrap {
+            overflow: hidden;
+            border-radius: 16px;
+            background: #000;
+        }
+
+        video {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 62vh;
+            background: #000;
+            border-radius: 16px;
+        }
+
+        .player-caption {
+            padding: 14px 6px 4px;
+        }
+
+        .player-caption h1 {
+            margin: 0;
+            font-size: 24px;
+            line-height: 1.15;
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .player-caption p {
+            margin: 8px 0 0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        .answer-card {
+            padding: 18px;
+            background: var(--panel);
+        }
+
+        .answer-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .answer-head h3 {
+            margin: 0;
+            font-size: 22px;
+            line-height: 1.2;
+            color: var(--navy);
+        }
+
+        .badge {
+            flex-shrink: 0;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: var(--blue-soft);
+            color: var(--navy);
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid #c7dce8;
+        }
+
+        .answer-text {
+            font-size: 15px;
+            line-height: 1.72;
+            color: #325276;
+        }
+
+        .answer-text p {
+            margin: 0;
+        }
+
+        .helper {
+            margin-top: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        .panel-card {
+            padding: 14px;
+            background: var(--panel-soft);
+        }
+
+        .panel-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .panel-top h2 {
+            margin: 0;
+            font-size: 19px;
+            color: var(--navy);
+        }
+
+        .mini {
+            color: var(--muted);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            min-height: 62px;
+            padding: 14px 12px;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.25;
+            text-align: left;
+            transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+            -webkit-tap-highlight-color: transparent;
+            color: #fff;
+            box-shadow: 0 6px 14px rgba(29, 54, 84, 0.08);
+        }
+
+        .buttons button:nth-child(4n+1) {
+            background: var(--navy);
+        }
+
+        .buttons button:nth-child(4n+2) {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .buttons button:nth-child(4n+3) {
+            background: var(--yellow);
+            color: var(--navy);
+        }
+
+        .buttons button:nth-child(4n+4) {
+            background: #8db8d4;
+            color: #fff;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: 0.96;
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
+
+        button.active {
+            box-shadow: 0 0 0 4px rgba(13, 74, 132, 0.12);
+            outline: 3px solid rgba(13, 74, 132, 0.16);
+            outline-offset: 0;
+            transform: translateY(-1px);
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+            padding: 18px 8px 6px;
+        }
+
+        @media (min-width: 720px) {
+            .app {
+                padding: 18px;
+            }
+
+            .buttons {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .player-caption h1 {
+                font-size: 28px;
+            }
+
+            .answer-head h3 {
+                font-size: 25px;
+            }
+
+            .answer-text {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 15px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero {
+                grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.95fr);
+                align-items: start;
+            }
+
+            .player-card {
+                top: 18px;
+            }
+
+            .panel-card {
+                position: sticky;
+                top: 18px;
+            }
+
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="hero">
+            <div>
+                <div class="card player-card">
+                    <div class="video-wrap">
+                        <video id="video" controls playsinline>
+                            <source id="videoSource" src="videos/czesc_720p.mp4" type="video/mp4">
+                            Twoja przeglądarka nie obsługuje wideo.
+                        </video>
+                    </div>
+
+                    <div class="player-caption">
+                        <h1>Hej! Jestem Maja</h1>
+                        <p>Kliknij pytanie, a wszystko Ci wyjaśnię.</p>
+                    </div>
+                </div>
+
+                <div class="card answer-card">
+                    <div class="answer-head">
+                        <h3 id="title">Cześć!</h3>
+                        <div class="badge">Azory</div>
+                    </div>
+                    <div class="answer-text" id="text">
+                        <p>Hej! Jestem Maja - Jeśli zastanawiasz się, czy Azory to szkoła dla Ciebie, to dobrze
+                            trafiłeś. Wybierz pytanie i zaczynamy.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card panel-card">
+                <div class="panel-top">
+                    <h2>Najczęstsze pytania</h2>
+                    <div class="mini">Kliknij i posłuchaj</div>
+                </div>
+
+                <div class="buttons" id="buttons"></div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Zespół Szkół nr 4 w Kutnie • Azory
+        </div>
+    </div>
+
+    <script>
+        const data = [
+      {
+        label: "Kierunki",
+        title: "Jakie są kierunki?",
+        video: "videos/oferta_720p.mp4",
+        text: "U nas możesz iść do technikum albo do szkoły branżowej pierwszego stopnia. W technikum masz dwa kierunki: technik transportu kolejowego i technik fotografii i multimediów. A jeśli chcesz szybciej zdobyć konkretny zawód, to szkoła branżowa daje sporo możliwości."
+      },
+      {
+        label: "Rekrutacja",
+        title: "Jak wygląda rekrutacja?",
+        video: "videos/przyjecie_720p.mp4",
+        text: "Rekrutacja do naszej szkoły jest naprawdę prosta. Najpierw składasz wniosek online, potem donosisz świadectwo i wyniki egzaminu ósmoklasisty. Dostaniesz też skierowanie na badania lekarskie, a później sprawdzasz listę przyjętych."
+      },
+      {
+        label: "Terminy",
+        title: "Jakie są terminy?",
+        video: "videos/terminy_720p.mp4",
+        text: "Terminy rekrutacji co roku ustala kuratorium. Najpierw składasz wniosek, potem pojawiają się listy, a na końcu potwierdzasz wybór szkoły. I ważne — pamiętaj, żeby zaznaczyć naszą szkołę jako pierwszy wybór."
+      },
+      {
+        label: "Dlaczego Azory?",
+        title: "Dlaczego warto wybrać Azory?",
+        video: "videos/dlaczego_my_720p.mp4",
+        text: "U nas uczysz się rzeczy, które naprawdę się przydają. Mamy nowoczesne pracownie, sprzęt, symulatory i konkretne kierunki. W technikum możesz zdobyć zawód i podejść do matury, a w branżowej skupiasz się na konkretnym fachu."
+      },
+      {
+        label: "Atmosfera",
+        title: "Jaka jest atmosfera?",
+        video: "videos/atmosfera_720p.mp4",
+        text: "U nas jest przyjazna, koleżeńska atmosfera. Łatwo się dogadać, szybko poznajesz nowych ludzi i po prostu dobrze się tu czujesz. Z nauczycielami też da się normalnie pogadać i liczyć na pomoc."
+      },
+      {
+        label: "Czy dam radę?",
+        title: "Czy dam sobie radę?",
+        video: "videos/dasz_rade_720p.mp4",
+        text: "Jasne - W każdej szkole trzeba się trochę pouczyć, ale jeśli będziesz się starać, to spokojnie dasz radę. A kiedy coś będzie trudne, możesz liczyć na pomoc."
+      },
+      {
+        label: "Zawodowe",
+        title: "Jak wyglądają zajęcia zawodowe?",
+        video: "videos/zawodowe_720p.mp4",
+        text: "Na zajęciach zawodowych na pewno nie jest nudno. Jest dużo praktyki, robimy różne projekty i korzystamy z pracowni oraz sprzętu, który naprawdę robi robotę. Uczysz się rzeczy przydatnych później w pracy."
+      },
+      {
+        label: "Pierwsze dni",
+        title: "Jak wyglądają pierwsze dni?",
+        video: "videos/pierwsze_dni_720p.mp4",
+        text: "Spokojnie - Na początku poznajesz klasę, nauczycieli i szkołę. Każdy jest wtedy w podobnej sytuacji, więc szybko się odnajdziesz."
+      },
+      {
+        label: "Co po szkole?",
+        title: "Co po tej szkole?",
+        video: "videos/po_szkole_720p.mp4",
+        text: "Po naszej szkole możesz iść do pracy w swoim zawodzie albo kontynuować naukę. Wszystko zależy od Ciebie i tego, w którą stronę chcesz iść. To Ty decydujesz, co dalej."
+      },
+      {
+        label: "Doświadczenie",
+        title: "Czy trzeba mieć jakieś doświadczenie?",
+        video: "videos/doswiadczenie_720p.mp4",
+        text: "Nie, nie trzeba. Wszystko jest tłumaczone od podstaw, więc spokojnie dasz sobie radę. A jeśli w czymś już jesteś dobry i chcesz się rozwijać, to nauczyciele i samorząd uczniowski pomogą Ci znaleźć swoją drogę."
+      }
+    ];
+
+    const video = document.getElementById("video");
+    const videoSource = document.getElementById("videoSource");
+    const title = document.getElementById("title");
+    const text = document.getElementById("text");
+    const buttons = document.getElementById("buttons");
+
+    function setActiveButton(activeBtn) {
+      document.querySelectorAll(".buttons button").forEach(btn => {
+        btn.classList.remove("active");
+      });
+      activeBtn.classList.add("active");
+    }
+
+    function playItem(item, btn) {
+      setActiveButton(btn);
+
+      video.pause();
+      video.muted = false;
+      videoSource.src = item.video;
+      video.load();
+
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+
+      title.textContent = item.title;
+      text.innerHTML = "<p>" + item.text + "</p>";
+
+      if (window.innerWidth < 1024) {
+        document.querySelector(".player-card").scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    }
+
+    data.forEach((item) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = item.label;
+
+      btn.addEventListener("click", () => {
+        playItem(item, btn);
+      });
+
+      buttons.appendChild(btn);
+    });
+    </script>
+</body>
+
+</html>
